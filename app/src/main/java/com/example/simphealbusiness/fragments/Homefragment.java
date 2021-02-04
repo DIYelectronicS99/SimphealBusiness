@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.SearchView;
 import android.widget.TextView;
 
@@ -397,7 +398,7 @@ public class Homefragment extends Fragment {
 
             ImageView shop_image;
             TextView shopname,shopaddress;
-            public ConstraintLayout constraintLayout;
+            public RelativeLayout relativeLayout;
 
 
             public shopviewHolder(@NonNull View itemView) {
@@ -406,7 +407,7 @@ public class Homefragment extends Fragment {
                 shop_image=itemView.findViewById(R.id.shop_pic);
                 shopname=itemView.findViewById(R.id.shop_name);
                 shopaddress=itemView.findViewById(R.id.shop_address);
-                constraintLayout = itemView.findViewById(R.id.shop_layout);
+                relativeLayout = itemView.findViewById(R.id.shop_layout);
 
 
             }
