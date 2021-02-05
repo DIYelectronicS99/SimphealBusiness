@@ -17,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.simphealbusiness.LoginActivity;
+import com.example.simphealbusiness.MainActivity;
 import com.example.simphealbusiness.R;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -85,7 +86,9 @@ public class Profilefragment extends Fragment {
         // Inflate the layout for this fragment
         View view =inflater.inflate(R.layout.fragment_profilefragment, container, false);
 
+        ((MainActivity)getActivity()).checkCart();
 
+        ((MainActivity)getActivity()).checkOrder();
 
         resetpass = view.findViewById(R.id.reset_password);
         editacc = view.findViewById(R.id.edit_prof);
@@ -96,9 +99,14 @@ public class Profilefragment extends Fragment {
         phone = view.findViewById(R.id.user_phone);
 
         email.setFocusable(false);
-        editacc.setClickable(false);
 
-        getAccdetails();
+        name.setFocusable(false);
+        /*
+        phone.setFocusable(false);
+        editacc.setClickable(false);*/
+        editacc.setText("Edit Profile");
+
+
 
 
 
@@ -115,6 +123,8 @@ public class Profilefragment extends Fragment {
 //                Toast.makeText(getContext(), "Click `Edit Profile` to save details",
 //                        Toast.LENGTH_SHORT).show();
                 editacc.setClickable(true);
+
+
             }
 
             @Override
@@ -139,6 +149,7 @@ public class Profilefragment extends Fragment {
 //                        Toast.LENGTH_SHORT).show();
                 editacc.setClickable(true);
 
+
             }
 
             @Override
@@ -149,12 +160,20 @@ public class Profilefragment extends Fragment {
             }
         });
 
+
         editacc.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                editaccount();
-                name.clearFocus();
-                phone.clearFocus();
+
+
+
+                    editaccount();
+                    name.clearFocus();
+                    phone.clearFocus();
+
+
+
+
             }
         });
 
@@ -181,6 +200,7 @@ public class Profilefragment extends Fragment {
         });
 
 
+        getAccdetails();
 
         return view;
     }
@@ -208,6 +228,8 @@ public class Profilefragment extends Fragment {
 
 
         Toast.makeText(getContext(), "Profile Updated ", Toast.LENGTH_SHORT).show();
+
+        editacc.setText("Edit Profile");
 
 
     }

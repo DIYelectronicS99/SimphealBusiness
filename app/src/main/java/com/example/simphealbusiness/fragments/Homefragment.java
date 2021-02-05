@@ -23,6 +23,7 @@ import android.widget.SearchView;
 import android.widget.TextView;
 
 
+import com.example.simphealbusiness.MainActivity;
 import com.example.simphealbusiness.R;
 import com.example.simphealbusiness.model.shopModel;
 import com.firebase.ui.database.FirebaseRecyclerAdapter;
@@ -115,6 +116,10 @@ public class Homefragment extends Fragment {
 
         View view = inflater
                 .inflate(R.layout.fragment_homefragment, container, false);
+
+        ((MainActivity)getActivity()).checkCart();
+
+        ((MainActivity)getActivity()).checkOrder();
 
         if(getArguments()!= null){
         String shopval = getArguments().getString("shopsrc");

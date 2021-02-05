@@ -22,7 +22,7 @@ import com.google.firebase.database.FirebaseDatabase;
 
 public class RegisterActivity extends AppCompatActivity {
 
-    private TextInputEditText mEmail,mFull_name,mPassword;
+    private TextInputEditText mEmail,mFull_name,mPassword, mphone;
     private FirebaseAuth mAuth;
     private TextView Signin,mbtn_reg;
     private ProgressBar progressbar;
@@ -38,6 +38,7 @@ public class RegisterActivity extends AppCompatActivity {
         mEmail=findViewById(R.id.user_email);
         mFull_name=findViewById(R.id.reg_user_name);
         mPassword=findViewById(R.id.user_password);
+        mphone = findViewById(R.id.userphone);
         mAuth = FirebaseAuth.getInstance();
         Signin=findViewById(R.id.signin_pg);
         mbtn_reg=findViewById(R.id.btn_reg);
@@ -49,6 +50,7 @@ public class RegisterActivity extends AppCompatActivity {
                 String email=mEmail.getText().toString().trim();
                 String password=mPassword.getText().toString().trim();
 
+                String phone = mphone.getText().toString();
                 if (TextUtils.isEmpty(email)){
                     mEmail.setError("Email address required");
                     return;
@@ -63,6 +65,10 @@ public class RegisterActivity extends AppCompatActivity {
                     return;
                 }
 
+                if(phone.length() < 10){
+                    mphone.setError("Phone must have 10 digits");
+                    return;
+                }
                 progressbar.setVisibility(View.VISIBLE);
                 String emailPattern = "[a-zA-Z0-9._-]+@[a-z]+\\.+[a-z]+";
                 if(mFull_name.getText().toString().matches("") || !mEmail.getText().toString().trim().matches(emailPattern))
@@ -76,6 +82,7 @@ public class RegisterActivity extends AppCompatActivity {
                                 databaseReference = FirebaseDatabase.getInstance().getReference("customer");
                                 databaseReference.child(mAuth.getUid()).child("name").setValue(mFull_name.getText().toString());
                                 databaseReference.child(mAuth.getUid()).child("email").setValue(mEmail.getText().toString());
+                                databaseReference.child(mAuth.getUid()).child("phone").setValue(mphone.getText().toString());
 
 
                                 Toast.makeText(RegisterActivity.this, "User created", Toast.LENGTH_SHORT).show();

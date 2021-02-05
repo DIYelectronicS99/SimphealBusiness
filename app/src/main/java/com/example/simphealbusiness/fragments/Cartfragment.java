@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.ListView;
@@ -25,9 +26,9 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.simphealbusiness.MainActivity;
 import com.example.simphealbusiness.R;
 import com.example.simphealbusiness.model.OrderModel;
-import com.firebase.ui.database.FirebaseRecyclerOptions;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -58,18 +59,19 @@ public class Cartfragment extends Fragment {
     DatabaseReference databaseReference;
     //private RecyclerView recyclerView;
 
+    public int flag ;
     CardView cardViewbill;
     double a1=0.0;
     double tx=0.0;
     double a2=0.0;
     private OrderAdapter userorderAdapter;
-    private int flag = 0;
+   // private int flag = 0;
     private TextView placeorder, tamount, ttax, toamount;
 
 
 
     private EditText uaddress;
-
+    public TextView nbadge;
     private List<OrderModel> orderlist=new ArrayList<>();
 
     // TODO: Rename parameter arguments, choose names that match
@@ -117,6 +119,15 @@ public class Cartfragment extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View view = inflater.inflate(R.layout.fragment_cartfragment, container, false);
+
+        //((MainActivity)getActivity()).checkCart();
+
+        ((MainActivity)getActivity()).checkOrder();
+
+
+        View view2 = getActivity().findViewById(R.id.HomeActivity);
+        nbadge = view2.findViewById(R.id.notifications_badge);
+        nbadge.setVisibility(View.INVISIBLE);
 
         tamount = view.findViewById(R.id.totalamount);
         ttax = view.findViewById(R.id.totaltax);
@@ -240,7 +251,7 @@ public class Cartfragment extends Fragment {
                             recyclerView.setLayoutManager(layoutManager);
                             //adapter.getFilter().filter(val);
                             recyclerView.setAdapter(userorderAdapter);
-
+                            flag = 1;
                             DecimalFormat df = new DecimalFormat("0.00");
                             tamount.setText((df.format(a1)));
                             ttax.setText(df.format(tx));
@@ -250,11 +261,9 @@ public class Cartfragment extends Fragment {
                         @Override
                         public void onCancelled(@NonNull DatabaseError error) {
 
+                            Toast.makeText(getContext(), "Cart is empty !", Toast.LENGTH_SHORT).show();
                         }
                     });
-
-
-
 
                 }
             }
@@ -282,12 +291,10 @@ public class Cartfragment extends Fragment {
 
 
 */
+
+
         return view;
     }
-
-
-
-
 
 
 
@@ -359,6 +366,14 @@ public class Cartfragment extends Fragment {
         });
 
         Toast.makeText(getContext(), "Order complete. Return to Home tab", Toast.LENGTH_SHORT).show();
+
+        Homefragment homefragment = new Homefragment();
+        FragmentManager manager = getFragmentManager();
+        manager.beginTransaction()
+
+                .replace(R.id.HomeActivity, homefragment, homefragment.getTag())
+                .commit();
+
 
     }
 

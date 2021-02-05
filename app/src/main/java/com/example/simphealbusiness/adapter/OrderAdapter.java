@@ -76,7 +76,7 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.orderViewHol
         float amount = Float.parseFloat(list.get(position).getAmount());
         float tax = Float.parseFloat(list.get(position).getTax());
         float total = amount + tax;
-        holder.changeOdr.setText("Remove");
+        holder.changeOdr.setText("Cancel");
 
 
         DecimalFormat df = new DecimalFormat();
@@ -129,106 +129,33 @@ public class OrderAdapter extends RecyclerView.Adapter<OrderAdapter.orderViewHol
 
 
 
-        if(currentItem.getUstatus().matches("ORDERED")){
+       /* if(currentItem.getUstatus().matches("ORDERED")){
             holder.changeOdr.setVisibility(View.INVISIBLE);
-        }
+        }*/
+
         holder.changeOdr.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String uorderID = currentItem.getOrderID();
-
-                Log.i(TAG, uorderID);
 
 
-                FirebaseDatabase
-                        .getInstance()
-                        .getReference()
-                        .child("userorders")
-                        .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
-                        .child(uorderID)
-                        .removeValue();
+                String curuid = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
+                DatabaseReference orderCollectionRef = FirebaseDatabase.getInstance().getReference()
+                        .child("userorders").child(curuid);
 
-                Toast.makeText(v.getContext(), "Item removed from cart!", Toast.LENGTH_LONG)
-                        .show();
-                Toast.makeText(v.getContext(), "Go to Home tab", Toast.LENGTH_LONG)
-                        .show();
-
-
-
-
-
-
-            /*    FragmentTransaction ft = getFragmentManager().beginTransaction();
-                if (Build.VERSION.SDK_INT >= 26) {
-                    ft.setReorderingAllowed(false);
-                }
-                ft.detach(this).attach(this).commit();
-*/
-
-/*
-                String umedID = currentItem.getUmedID();
-                String orderStoreID = currentItem.getStoreId();
-                String UID = currentItem.getUID();
-
-
-
-                DatabaseReference uidref = FirebaseDatabase
-                        .getInstance()
-                        .getReferenceFromUrl("https://smplmedicalapp" +
-                                "-408ea-default-rtdb.firebaseio.com/" +
-                                "userorders")
-                        .child(UID)
-                        .child(uorderID);
-
-
-
-                uidref.child(umedID).child("ustatus").setValue("ACCEPTED");*/
-
-/*
-
-String url = "https://smplmedicalapp-408ea-default-rtdb.firebaseio.com/";
-                DatabaseReference vendorOderRef = FirebaseDatabase.getInstance()
-                        .getReferenceFromUrl(url)
-                        .child("orders");
-                vendorOderRef.addListenerForSingleValueEvent(new ValueEventListener() {
+                orderCollectionRef.addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull DataSnapshot snapshot) {
-                        for(DataSnapshot dataSnapshot : snapshot.getChildren()){
-                            DatabaseReference voderRef1 = FirebaseDatabase.getInstance()
-                                    .getReferenceFromUrl(url).child("orders").child(dataSnapshot.getKey());
+                        for(DataSnapshot orderSnapshot: snapshot.getChildren()){
 
-                            voderRef1.addListenerForSingleValueEvent(new ValueEventListener() {
-                                @Override
-                                public void onDataChange(@NonNull DataSnapshot snapshot) {
-                                    for(DataSnapshot snapshot2: snapshot.getChildren()){
+                            String odrKey = orderSnapshot.getKey();
+                            Log.i("OrderID", String.valueOf(orderSnapshot.child(medID)));
 
-                                        Log.i("testing which ID", snapshot2.getKey());
+                         if(orderSnapshot.child(medID).exists()){
+                             orderSnapshot.getRef().removeValue();
+                             Log.i("remove msg", "Removed from userodr");
 
-                                        DatabaseReference voderRef2 = voderRef1.child(snapshot2.getKey());
-                                        DatabaseReference voderRefcust = voderRef1.child(snapshot2.child("customer").getKey());
-
-                                        VendorOrderModel vendorOrderModel = snapshot2.getValue(VendorOrderModel.class);
-
-                                        VendorOrderModel vendorOrderModelcust = snapshot2.child("customer").getValue(VendorOrderModel.class);
-                                        Log.i("testing which key: ", snapshot2.getValue().toString());
-                                        Log.i("testing which key 2: ", vendorOrderModel.getStoreId());
-
-
-                                        if(vendorOrderModel.getStoreId().equals(orderStoreID) &&
-                                                vendorOrderModel.getMedicineId().equals(umedID)  &&
-                                        vendorOrderModelcust.getUid().equals(UID)){
-                                            vendorOrderModel.setStatus("ACCEPTED");
-                                        }
-
-                                    }
-                                }
-
-                                @Override
-                                public void onCancelled(@NonNull DatabaseError error) {
-
-                                }
-                            });
+                         }
 
                         }
                     }
@@ -239,13 +166,9 @@ String url = "https://smplmedicalapp-408ea-default-rtdb.firebaseio.com/";
                     }
                 });
 
-*/
-
-
-                //holder.changeOdr.setText("Accepted");
-
             }
         });
+
         //holder.quantity.setText(list.get(position).getQuantity());
 
     }

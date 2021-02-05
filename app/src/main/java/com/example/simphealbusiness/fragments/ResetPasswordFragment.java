@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.simphealbusiness.MainActivity;
 import com.example.simphealbusiness.R;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
@@ -85,6 +86,9 @@ public class ResetPasswordFragment extends Fragment {
 
         View view = inflater.inflate(R.layout.fragment_reset_password, container, false);
 
+        ((MainActivity)getActivity()).checkCart();
+
+        ((MainActivity)getActivity()).checkOrder();
         oldpass = view.findViewById(R.id.oldpass);
         newpass1 = view.findViewById(R.id.newpass1);
         newpass2 = view.findViewById(R.id.newpass2);

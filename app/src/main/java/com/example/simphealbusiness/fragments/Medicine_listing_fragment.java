@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import android.widget.SearchView;
 import android.widget.TextView;
 
+import com.example.simphealbusiness.MainActivity;
 import com.example.simphealbusiness.R;
 import com.example.simphealbusiness.adapter.ItemAdapter;
 import com.example.simphealbusiness.model.ItemModel;
@@ -109,6 +110,10 @@ public class Medicine_listing_fragment extends Fragment {
                         container,
                         false);
 
+
+        ((MainActivity)getActivity()).checkCart();
+
+        ((MainActivity)getActivity()).checkOrder();
         shopname = view.findViewById(R.id.sdname);
         shopemail = view.findViewById(R.id.sdemail);
         shopaddress = view.findViewById(R.id.sdaddress);
